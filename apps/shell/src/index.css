@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: hsl(240 10% 3.9%);
+  color: hsl(0 0% 98%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Markdown prose styles */
+.prose {
+  line-height: 1.75;
+  color: hsl(240 5% 84.9%);
+}
+.prose h1 { font-size: 2rem; font-weight: 700; margin: 1.5rem 0 1rem; color: hsl(0 0% 98%); }
+.prose h2 { font-size: 1.5rem; font-weight: 600; margin: 1.25rem 0 0.75rem; color: hsl(0 0% 98%); border-bottom: 1px solid hsl(240 3.7% 15.9%); padding-bottom: 0.5rem; }
+.prose h3 { font-size: 1.25rem; font-weight: 600; margin: 1rem 0 0.5rem; color: hsl(0 0% 95%); }
+.prose p { margin: 0.75rem 0; }
+.prose a { color: hsl(217.2 91.2% 59.8%); text-decoration: underline; }
+.prose a:hover { color: hsl(217.2 91.2% 69.8%); }
+.prose ul, .prose ol { margin: 0.75rem 0; padding-left: 1.5rem; }
+.prose li { margin: 0.25rem 0; }
+.prose blockquote { border-left: 3px solid hsl(217.2 91.2% 59.8%); padding-left: 1rem; margin: 1rem 0; color: hsl(240 5% 64.9%); font-style: italic; }
+.prose code { font-family: var(--font-mono); background: hsl(240 3.7% 12%); padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-size: 0.875em; }
+.prose pre { background: hsl(240 3.7% 10%); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; border: 1px solid hsl(240 3.7% 15.9%); }
+.prose pre code { background: none; padding: 0; border-radius: 0; font-size: 0.875rem; line-height: 1.7; }
+.prose table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.prose th, .prose td { border: 1px solid hsl(240 3.7% 15.9%); padding: 0.5rem 0.75rem; text-align: left; }
+.prose th { background: hsl(240 3.7% 12%); font-weight: 600; }
+.prose hr { border: none; border-top: 1px solid hsl(240 3.7% 15.9%); margin: 1.5rem 0; }
+.prose strong { color: hsl(0 0% 98%); font-weight: 600; }
+.prose img { max-width: 100%; border-radius: 0.5rem; margin: 1rem 0; }
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(240 3.7% 20%); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(240 3.7% 30%); }

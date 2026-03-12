@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@zephyr-challenge/shared": ["../../packages/shared/src"]
+    }
+  },
+  "include": ["src"]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "zephyr-challenge",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n explorer,viewer,shell -c blue,green,yellow \"pnpm --filter file-explorer dev\" \"pnpm --filter md-viewer dev\" \"pnpm --filter shell dev\"",
+    "build": "pnpm --filter file-explorer build && pnpm --filter md-viewer build && pnpm --filter shell build",
+    "build:all": "pnpm -r build",
+    "serve:ssr": "pnpm --filter shell serve:ssr",
+    "dev:shell": "pnpm --filter shell dev",
+    "dev:explorer": "pnpm --filter file-explorer dev",
+    "dev:viewer": "pnpm --filter md-viewer dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "typescript": "^5.7.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "core-js"
+    ]
+  }
+}

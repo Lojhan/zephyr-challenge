@@ -3,6 +3,8 @@ import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { withZephyr } from 'zephyr-rsbuild-plugin';
 
+const isProd = process.env.NODE_ENV === 'production';
+
 export default defineConfig({
   plugins: [
     pluginReact(),
@@ -16,9 +18,10 @@ export default defineConfig({
         react: { singleton: true, requiredVersion: '^19.0.0' },
         'react-dom': { singleton: true, requiredVersion: '^19.0.0' },
       },
+      dts: false,
     }),
-    withZephyr(),
-  ],
+    isProd && withZephyr(),
+  ].filter(Boolean),
   server: {
     port: 3002,
   },

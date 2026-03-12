@@ -2,17 +2,17 @@ import type { Config } from 'tailwindcss';
 
 export default {
   content: ['./src/**/*.{ts,tsx}'],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        border: 'hsl(240 3.7% 15.9%)',
-        background: 'hsl(240 10% 3.9%)',
-        foreground: 'hsl(0 0% 98%)',
-        primary: { DEFAULT: 'hsl(217.2 91.2% 59.8%)' },
-        secondary: { DEFAULT: 'hsl(240 3.7% 15.9%)', foreground: 'hsl(0 0% 98%)' },
-        muted: { DEFAULT: 'hsl(240 3.7% 15.9%)', foreground: 'hsl(240 5% 64.9%)' },
-        accent: { DEFAULT: 'hsl(240 3.7% 15.9%)', foreground: 'hsl(0 0% 98%)' },
+        border: 'var(--border)',
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+        secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+        muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+        accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+        card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
       },
     },
   },

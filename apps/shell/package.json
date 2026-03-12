@@ -32,5 +32,9 @@
     "tsx": "^4.19.0",
     "typescript": "^5.7.0",
     "zephyr-rsbuild-plugin": "^0.1.15"
+  },
+  "zephyr:dependencies": {
+    "file_explorer": "workspace:*",
+    "md_viewer": "workspace:*"
   }
 }

@@ -8,7 +8,7 @@ export default function FileExplorer({
   searchQuery,
 }: FileExplorerProps) {
   return (
-    <nav className="py-1" role="tree" aria-label="File explorer">
+    <nav className="py-1" aria-label="File explorer">
       <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
         Explorer
       </div>

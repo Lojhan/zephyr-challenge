@@ -11,3 +11,8 @@ declare module 'md_viewer/MarkdownViewer' {
   const MarkdownViewer: FC<MarkdownViewerProps>;
   export default MarkdownViewer;
 }
+
+declare module '*.md' {
+  const content: string;
+  export default content;
+}

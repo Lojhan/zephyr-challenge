@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Check, Copy } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface CodeBlockProps {
   children: string;
@@ -9,8 +10,7 @@ interface CodeBlockProps {
 
 export function CodeBlock({ children, className }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
-
-  const language = className?.replace('language-', '') || '';
+  const language = className?.replace('language-', '') || 'text';
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(children);
@@ -19,30 +19,43 @@ export function CodeBlock({ children, className }: CodeBlockProps) {
   };
 
   return (
-    <div className="relative group">
-      {language && (
-        <div className="absolute top-2 left-3 text-[10px] uppercase tracking-wider text-muted-foreground/60">
+    <div className="group relative my-4 overflow-hidden rounded-lg border border-border">
+      <div className="flex items-center justify-between bg-muted/50 px-4 py-1.5">
+        <span className="text-xs uppercase tracking-wider text-muted-foreground">
           {language}
-        </div>
-      )}
-      <button
-        onClick={handleCopy}
-        className={cn(
-          'absolute top-2 right-2 p-1.5 rounded-md transition-all',
-          'opacity-0 group-hover:opacity-100',
-          'bg-secondary/80 hover:bg-secondary text-foreground/70 hover:text-foreground',
-        )}
-        aria-label="Copy code"
+        </span>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          aria-label="Copy code"
+        >
+          {copied ? (
+            <>
+              <Check className="h-3.5 w-3.5 text-green-400" />
+              <span>Copied</span>
+            </>
+          ) : (
+            <>
+              <Copy className="h-3.5 w-3.5" />
+              <span>Copy</span>
+            </>
+          )}
+        </button>
+      </div>
+      <SyntaxHighlighter
+        language={language}
+        style={materialDark}
+        customStyle={{
+          margin: 0,
+          borderRadius: 0,
+          background: 'oklch(0.174 0.024 235.5)',
+          fontSize: '0.875rem',
+        }}
+        showLineNumbers={false}
       >
-        {copied ? (
-          <Check className="h-3.5 w-3.5 text-green-400" />
-        ) : (
-          <Copy className="h-3.5 w-3.5" />
-        )}
-      </button>
-      <pre className={cn('!mt-0', language && 'pt-8')}>
-        <code className={className}>{children}</code>
-      </pre>
+        {children}
+      </SyntaxHighlighter>
     </div>
   );
 }

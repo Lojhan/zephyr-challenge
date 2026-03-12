@@ -34,6 +34,15 @@ export function FileTree({
     [node, searchQuery],
   );
 
+  const sortedChildren = useMemo(() => {
+    if (!node.children) return [];
+    return [...node.children].sort((a, b) => {
+      if (a.type === 'folder' && b.type !== 'folder') return -1;
+      if (a.type !== 'folder' && b.type === 'folder') return 1;
+      return a.name.localeCompare(b.name);
+    });
+  }, [node.children]);
+
   // Auto-expand when searching
   const isExpanded = searchQuery ? true : expanded;
 
@@ -60,9 +69,9 @@ export function FileTree({
         isSelected={isSelected}
         onClick={handleClick}
       />
-      {isFolder && isExpanded && node.children && (
+      {isFolder && isExpanded && (
         <div role="group">
-          {node.children.map((child) => (
+          {sortedChildren.map((child) => (
             <FileTree
               key={child.path}
               node={child}

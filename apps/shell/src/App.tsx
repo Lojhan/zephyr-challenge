@@ -1,30 +1,53 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { FileExplorerProps, MarkdownViewerProps } from '@zephyr-challenge/shared';
 import { Header } from './components/Header';
 import { RemoteLoader } from './components/RemoteLoader';
 import { SidebarFallback } from './components/SidebarFallback';
 import { ContentFallback } from './components/ContentFallback';
 import { ScrollArea } from './components/ui/scroll-area';
-import { fileTree, getContent, searchContent } from './lib/content-registry';
+import { fileTree, getContent, searchFiles, humanizeName } from './lib/content-registry';
 
 const loadFileExplorer = () => import('file_explorer/FileExplorer');
 const loadMarkdownViewer = () => import('md_viewer/MarkdownViewer');
 
-export default function App() {
-  const [selectedPath, setSelectedPath] = useState('docs/README.md');
-  const [searchQuery, setSearchQuery] = useState('');
+function getPathFromHash(): string {
+  const hash = window.location.hash.slice(1); // remove '#'
+  return hash ? decodeURIComponent(hash) : 'README.md';
+}
 
-  const currentContent = useMemo(() => getContent(selectedPath), [selectedPath]);
+export default function App() {
+  const [selectedPath, setSelectedPath] = useState(getPathFromHash);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [content, setContent] = useState('');
+
+  // Sync URL hash → state on popstate (back/forward)
+  useEffect(() => {
+    const onHashChange = () => setSelectedPath(getPathFromHash());
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  // Lazy-load markdown content when selectedPath changes
+  useEffect(() => {
+    let cancelled = false;
+    getContent(selectedPath).then((md) => {
+      if (!cancelled) setContent(md);
+    });
+    return () => { cancelled = true; };
+  }, [selectedPath]);
 
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
-    return searchContent(searchQuery);
+    return searchFiles(searchQuery);
   }, [searchQuery]);
 
   const handleFileSelect = useCallback((path: string) => {
+    window.location.hash = encodeURIComponent(path);
     setSelectedPath(path);
     setSearchQuery('');
   }, []);
+
+  const breadcrumbParts = selectedPath.split('/');
 
   const explorerProps: FileExplorerProps = {
     files: fileTree,
@@ -34,8 +57,8 @@ export default function App() {
   };
 
   const viewerProps: MarkdownViewerProps = {
-    content: currentContent?.content || '# File Not Found\n\nSelect a file from the sidebar.',
-    filename: currentContent?.title || 'Untitled',
+    content,
+    filename: humanizeName(breadcrumbParts[breadcrumbParts.length - 1]),
   };
 
   return (
@@ -58,7 +81,7 @@ export default function App() {
                     onClick={() => handleFileSelect(item.path)}
                     className="w-full text-left text-xs px-2 py-1.5 rounded hover:bg-accent text-foreground truncate block"
                   >
-                    {item.title}
+                    {item.name}
                     <span className="text-muted-foreground ml-1">
                       — {item.path}
                     </span>
@@ -78,14 +101,23 @@ export default function App() {
 
         {/* Main Content — MD Viewer Remote */}
         <main className="flex-1 overflow-hidden">
-          <ScrollArea className="h-full">
-            <div className="max-w-4xl mx-auto py-8 px-8">
-              <RemoteLoader<MarkdownViewerProps>
-                loader={loadMarkdownViewer}
-                fallback={<ContentFallback />}
-                props={viewerProps}
-              />
-            </div>
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-1 border-b border-border px-4 py-2 text-sm text-muted-foreground">
+            {breadcrumbParts.map((part, i) => (
+              <span key={part} className="flex items-center gap-1">
+                {i > 0 && <span className="text-border">/</span>}
+                <span className={i === breadcrumbParts.length - 1 ? 'text-foreground' : ''}>
+                  {humanizeName(part)}
+                </span>
+              </span>
+            ))}
+          </div>
+          <ScrollArea className="h-[calc(100vh-7rem)]">
+            <RemoteLoader<MarkdownViewerProps>
+              loader={loadMarkdownViewer}
+              fallback={<ContentFallback />}
+              props={viewerProps}
+            />
           </ScrollArea>
         </main>
       </div>

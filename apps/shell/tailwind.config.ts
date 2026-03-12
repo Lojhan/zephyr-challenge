@@ -1,40 +1,49 @@
 import type { Config } from 'tailwindcss';
 
 export default {
-  content: ['./src/**/*.{ts,tsx}'],
-  darkMode: 'class',
+  content: [
+    '../**/*.{ts,tsx}',
+  ],
   theme: {
     extend: {
       colors: {
-        border: 'hsl(240 3.7% 15.9%)',
-        input: 'hsl(240 3.7% 15.9%)',
-        background: 'hsl(240 10% 3.9%)',
-        foreground: 'hsl(0 0% 98%)',
+        border: 'var(--border)',
+        input: 'var(--input)',
+        ring: 'var(--ring)',
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
         primary: {
-          DEFAULT: 'hsl(217.2 91.2% 59.8%)',
-          foreground: 'hsl(0 0% 98%)',
+          DEFAULT: 'var(--primary)',
+          foreground: 'var(--primary-foreground)',
         },
         secondary: {
-          DEFAULT: 'hsl(240 3.7% 15.9%)',
-          foreground: 'hsl(0 0% 98%)',
+          DEFAULT: 'var(--secondary)',
+          foreground: 'var(--secondary-foreground)',
         },
         muted: {
-          DEFAULT: 'hsl(240 3.7% 15.9%)',
-          foreground: 'hsl(240 5% 64.9%)',
+          DEFAULT: 'var(--muted)',
+          foreground: 'var(--muted-foreground)',
         },
         accent: {
-          DEFAULT: 'hsl(240 3.7% 15.9%)',
-          foreground: 'hsl(0 0% 98%)',
+          DEFAULT: 'var(--accent)',
+          foreground: 'var(--accent-foreground)',
+        },
+        destructive: {
+          DEFAULT: 'var(--destructive)',
         },
         card: {
-          DEFAULT: 'hsl(240 10% 3.9%)',
-          foreground: 'hsl(0 0% 98%)',
+          DEFAULT: 'var(--card)',
+          foreground: 'var(--card-foreground)',
+        },
+        popover: {
+          DEFAULT: 'var(--popover)',
+          foreground: 'var(--popover-foreground)',
         },
       },
       borderRadius: {
-        lg: '0.5rem',
-        md: '0.375rem',
-        sm: '0.25rem',
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
     },
   },
